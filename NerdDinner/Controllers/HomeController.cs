@@ -28,5 +28,11 @@ namespace NerdDinner.Controllers
 
             return View();
         }
+        public ActionResult Fourth_Page()
+        {
+            ViewBag.Message = "This is Fourth Page.";
+
+            return View();
+        }
     }
 }
