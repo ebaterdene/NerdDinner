@@ -1,0 +1,33 @@
+#File Patterns
+*.cache
+*.suo
+*.user
+_NCrunch*
+_ReSharper*
+*.log
+*.eto
+*.aps
+*info-log.txt*
+*.dll
+*.pdb
+compass.service.log*
+*/Ninject.xml
+
+#Nuget files
+.nuget/*.aps
+.nuget/*.eto
+.nuget/*.user
+.nuget/[Bb]in
+.nuget/[Dd]ebug
+.nuget/[Rr]elease
+.nuget/obj
+
+dbdeploy/*
+
+
+#Directories
+/Assemblies
+/Backup
+packages/**
+*/bin/**
+*/obj/**
