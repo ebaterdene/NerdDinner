@@ -7,8 +7,8 @@ namespace NerdDinner.Models
 {
     public class DinnerRepository
     {
-        private NerdDinnerEntities entities = new NerdDinnerEntities();
-
+        //private NerdDinnerEntities entities = new NerdDinnerEntities();
+        private NerDinnerEntities entities = new NerDinnerEntities();
         // Query Methods.
 
         public IQueryable<Dinner> FindAllDinners()

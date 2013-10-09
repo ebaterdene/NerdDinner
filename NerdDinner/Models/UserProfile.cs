@@ -19,6 +19,7 @@ namespace NerdDinner.Models
             this.webpages_Roles = new HashSet<webpages_Roles>();
         }
     
+        
         public int UserId { get; set; }
         public string UserName { get; set; }
     
