@@ -195,9 +195,6 @@
       <DependentUpon>NerdDinner.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\test.cs" />
-    <Compile Include="Models\UserProfile.cs">
-      <DependentUpon>NerdDinner.tt</DependentUpon>
-    </Compile>
     <Compile Include="Models\webpages_Membership.cs">
       <DependentUpon>NerdDinner.tt</DependentUpon>
     </Compile>

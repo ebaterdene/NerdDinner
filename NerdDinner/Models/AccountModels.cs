@@ -19,11 +19,12 @@ namespace NerdDinner.Models
     }
 
     [Table("UserProfile")]
-    public partial class UserProfile
+    public class UserProfile
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
         public int UserId { get; set; }
+
         public string UserName { get; set; }
     }
 

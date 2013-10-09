@@ -31,16 +31,16 @@ namespace NerdDinner.Models
 
         public void Add(Dinner dinner)
         {
-            entities.Dinners.AddObject(dinner);
+            entities.Dinners.Add(dinner);
         }
 
         public void Delete(Dinner dinner)
         {
             foreach (var rsvp in dinner.RSVPs)
             {
-                entities.RSVPs.DeleteObject(dinner.RSVPs);
+                entities.RSVPs.Remove(rsvp);
             }
-            entities.Dinners.DeleteObject(dinner);
+            entities.Dinners.Remove(dinner);
         }
 
         //Persistence
