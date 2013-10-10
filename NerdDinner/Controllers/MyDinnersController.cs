@@ -29,5 +29,7 @@ namespace NerdDinner.Controllers
             ViewBag.Message = "Fetching Dinner Data.";
             return View();
         }
+
+        
     }
 }
