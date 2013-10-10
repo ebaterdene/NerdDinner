@@ -19,9 +19,9 @@ namespace NerdDinner.Models
         public IQueryable<Dinner> FindUpcomingDinners()
         {
             return from dinner in entities.Dinners
-                   where dinner.EventDate > DateTime.Now
-                   orderby dinner.EventDate
-                   select dinner;
+                    where dinner.EventDate > DateTime.Now
+                    orderby dinner.EventDate
+                    select dinner;
         }
 
         public Dinner GetDinner(int id)

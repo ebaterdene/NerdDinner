@@ -34,5 +34,11 @@ namespace NerdDinner.Controllers
 
             return View();
         }
+        public ActionResult Fifth_Page()
+        {
+            ViewBag.Message = "This is Fifth Page.";
+
+            return View();
+        }
     }
 }

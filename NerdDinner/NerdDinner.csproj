@@ -166,6 +166,7 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\DinnersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\MyDinnersController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -174,7 +175,6 @@
     <Compile Include="Models\Dinner.cs">
       <DependentUpon>NerdDinner.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\Dinner1.cs" />
     <Compile Include="Models\DinnerRepository.cs" />
     <Compile Include="Models\NerdDinner.Context.cs">
       <AutoGen>True</AutoGen>
@@ -340,6 +340,12 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Fourth_Page.cshtml" />
+    <Content Include="Views\Dinners\NotFound.cshtml" />
+    <Content Include="Views\Home\Fifth_Page.cshtml" />
+    <Content Include="Views\MyDinners\Index.cshtml" />
+    <Content Include="Views\MyDinners\SecondPage.cshtml" />
+    <Content Include="Views\MyDinners\Second_Page.cshtml" />
+    <Content Include="Views\MyDinners\Fetch_Dinner_Data.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

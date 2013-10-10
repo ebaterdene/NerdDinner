@@ -18,7 +18,7 @@ namespace NerdDinner.Models
         {
             this.RSVPs = new HashSet<RSVP>();
         }
-
+    
         public int DinnerID { get; set; }
         public string Title { get; set; }
         public System.DateTime EventDate { get; set; }
@@ -29,7 +29,7 @@ namespace NerdDinner.Models
         public string Country { get; set; }
         public double Latitude { get; set; }
         public double Longtitude { get; set; }
-
+    
         public virtual ICollection<RSVP> RSVPs { get; set; }
     }
 
