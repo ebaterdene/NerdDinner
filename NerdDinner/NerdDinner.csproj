@@ -172,38 +172,10 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountModels.cs" />
-    <Compile Include="Models\Dinner.cs">
-      <DependentUpon>NerdDinner.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\Dinner.cs" />
     <Compile Include="Models\DinnerRepository.cs" />
-    <Compile Include="Models\NerdDinner.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NerdDinner.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NerdDinner.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NerdDinner.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\NerdDinner.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>NerdDinner.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="Models\RSVP.cs">
-      <DependentUpon>NerdDinner.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\test.cs" />
-    <Compile Include="Models\webpages_Membership.cs">
-      <DependentUpon>NerdDinner.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\webpages_OAuthMembership.cs">
-      <DependentUpon>NerdDinner.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\webpages_Roles.cs">
-      <DependentUpon>NerdDinner.tt</DependentUpon>
-    </Compile>
+    <Compile Include="Models\NerdDinners.cs" />
+    <Compile Include="Models\RSVP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -267,24 +239,6 @@
     <Content Include="Content\themes\base\minified\jquery.ui.theme.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
-    <EntityDeploy Include="Models\NerdDinner.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>NerdDinner.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\NerdDinner.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>NerdDinner.edmx</DependentUpon>
-      <LastGenOutput>NerdDinner.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\NerdDinner.edmx.diagram">
-      <DependentUpon>NerdDinner.edmx</DependentUpon>
-    </Content>
-    <Content Include="Models\NerdDinner.edmx.sql" />
-    <Content Include="Models\NerdDinner.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>NerdDinner.edmx</DependentUpon>
-      <LastGenOutput>NerdDinner.cs</LastGenOutput>
-    </Content>
     <None Include="Scripts\jquery-1.7.1.intellisense.js" />
     <Content Include="Scripts\jquery-1.7.1.js" />
     <Content Include="Scripts\jquery-1.7.1.min.js" />
@@ -346,6 +300,12 @@
     <Content Include="Views\MyDinners\SecondPage.cshtml" />
     <Content Include="Views\MyDinners\Second_Page.cshtml" />
     <Content Include="Views\MyDinners\Fetch_Dinner_Data.cshtml" />
+    <Content Include="Views\MyDinners\My_Dinner_Details.cshtml" />
+    <Content Include="Views\MyDinners\Not_Found.cshtml" />
+    <Content Include="Views\MyDinners\My_Dinner_Details_1.cshtml" />
+    <Content Include="Views\MyDinners\View_All_Dinners.cshtml" />
+    <Content Include="Views\MyDinners\View_One_Dinner.cshtml" />
+    <Content Include="Views\Dinners\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

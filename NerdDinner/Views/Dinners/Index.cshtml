@@ -8,15 +8,14 @@
 <table>
     <thead>
         <tr>
-            <th></th>
-            <th>Dinner</th>        
+        <th>Dinner</th>
+            
         </tr>
     </thead>
     <tbody>
         @foreach (var dinner in Model)
         {
             <tr>
-                <td>row</td>
                 <td>@dinner.Title</td>
             </tr>    
         }

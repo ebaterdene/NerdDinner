@@ -24,12 +24,11 @@ namespace NerdDinner.Controllers
         }
         */
         
-        public void Index()
+        public ActionResult Index()
         {
             var dinners = dnRepository.FindUpcomingDinners().ToList();
 
-            //return View("Index", dinners);
-            Response.Write("<h1>Coming Soon: Dinners</h1>");
+            return View(dinners);
         }
         
         /*

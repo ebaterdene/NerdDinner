@@ -7,6 +7,7 @@ using System.Web.Http;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
+using NerdDinner.Models;
 
 namespace NerdDinner
 {
@@ -25,7 +26,7 @@ namespace NerdDinner
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
 
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<NerdDinner.Models.NerDinnerEntities>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<NerdDinners>());
         }
     }
 }
