@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DinnerRepositoryTests.cs" />
+    <Compile Include="DinnersControllerTests.cs" />
     <Compile Include="NerdDinnersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

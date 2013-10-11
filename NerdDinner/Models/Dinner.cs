@@ -14,6 +14,12 @@ namespace NerdDinner.Models
         public string Address { get; set; }
         public string HostedBy { get; set; }
 
+        public string Description { get; set; }
+        public string ContactPhone { get; set; }
+        public string Country { get; set; }
+        public string Latitude { get; set; }
+        public string Longtitude { get; set; }
+
         public virtual ICollection<RSVP> RSVPs { get; set; }
 
         public Dinner()

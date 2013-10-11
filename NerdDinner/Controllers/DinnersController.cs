@@ -30,42 +30,42 @@ namespace NerdDinner.Controllers
 
             return View(dinners);
         }
-        
-        /*
+
         public ActionResult Details(int id)
         {
             var dinner = dnRepository.GetDinner(id);
 
+
+            //Error Happens when I 
+            if (id.GetType() != null)
+            {
+                id = 0;
+            }
+
             if (dinner == null)
             {
-                return View("Not Found");
+                return View("Not_Found", id);
             }
             else
             {
-                return View("Details", dinner);
+                return View(dinner);
             }
-            //page 47.
-
-
-
         }
-        */
 
-        
-        public ActionResult Details(int id)
+        public ActionResult Edit(int id)
+        {
+            var dinner = dnRepository.GetDinner(id);
+            return View(dinner);
+        }
+
+        public void Delete(int id)
         {
             
-            var dinner = dnRepository.GetDinner(id);
-
-            if (dinner == null)
-            {
-                return View("Not Found");
-            }
-            else
-            {
-                return View("Details", dinner);
-            }
-
+        }
+        
+        public void Create()
+        {
+            
         }
 
         /*
