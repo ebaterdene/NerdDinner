@@ -153,28 +153,5 @@ namespace NerdDinner.Tests
 
             Assert.That(results, Has.Count.EqualTo(this.AllDinners.Count - 1));
         }
-
-        [Test]
-        public void Explore()
-        {
-            var list = new List<string>()
-                {
-                    "fred",
-                    "bob",
-                    "chris",
-                    "enkh",
-                    "Sue",
-                };
-
-            var listToIteratoeOver = list.ToList();
-
-            foreach (var value in listToIteratoeOver)
-            {
-                list.Remove(value);
-            }
-
-            Assert.That(list, Has.Count.EqualTo(0));
-            Assert.That(listToIteratoeOver, Has.Count.EqualTo(5));
-        }
     }
 }
