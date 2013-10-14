@@ -308,6 +308,9 @@
     <Content Include="Views\Dinners\Index.cshtml" />
     <Content Include="Views\Dinners\Not_Found.cshtml" />
     <Content Include="Views\Dinners\Edit.cshtml" />
+    <Content Include="Views\Dinners\Create.cshtml" />
+    <Content Include="Views\Dinners\Delete.cshtml" />
+    <Content Include="Views\Dinners\Deleted.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

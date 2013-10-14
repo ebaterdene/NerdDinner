@@ -1,18 +1,16 @@
 ﻿@model NerdDinner.Models.Dinner
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Create";
 }
 
-<h2>Edit</h2>
+<h2>Create</h2>
 
 @using (Html.BeginForm()) {
     @Html.ValidationSummary(true)
 
     <fieldset>
-        <legend>Dinner</legend>
-
-        @Html.HiddenFor(model => model.DinnerID)
+        <legend>Host a Dinner</legend>
 
         <div class="editor-label">
             @Html.LabelFor(model => model.Title)
@@ -35,7 +33,7 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.Address)
-            @Html.ValidationMessageFor(model => model.Address, "*")
+            @Html.ValidationMessageFor(model => model.Address)
         </div>
 
         <div class="editor-label">
@@ -43,7 +41,7 @@
         </div>
         <div class="editor-field">
             @Html.EditorFor(model => model.HostedBy)
-            @Html.ValidationMessageFor(model => model.HostedBy, "*")
+            @Html.ValidationMessageFor(model => model.HostedBy)
         </div>
 
         <div class="editor-label">
@@ -85,9 +83,9 @@
             @Html.EditorFor(model => model.Longtitude)
             @Html.ValidationMessageFor(model => model.Longtitude)
         </div>
-        @Html.ValidationSummary("Please correct the errors and try again.")
+
         <p>
-            <input type="submit" value="Save" />
+            <input type="submit" value="Create" />
         </p>
     </fieldset>
 }

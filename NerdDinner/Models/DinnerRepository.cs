@@ -35,6 +35,8 @@ namespace NerdDinner.Models
             entities.Dinners.Add(dinner);
         }
 
+
+
         public void Delete(Dinner dinner)
         {
             var dinnerToRemove = this.entities.Dinners.Single(row => row.DinnerID == dinner.DinnerID);
