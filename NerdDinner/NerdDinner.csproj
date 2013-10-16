@@ -171,6 +171,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201310141807359_InitialCreate.cs" />
+    <Compile Include="Migrations\201310141807359_InitialCreate.Designer.cs">
+      <DependentUpon>201310141807359_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Dinner.cs" />
     <Compile Include="Models\DinnerRepository.cs" />
@@ -179,9 +184,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\NerdDinner.mdf" />
-    <Content Include="App_Data\NerdDinner_log.ldf">
-      <DependentUpon>NerdDinner.mdf</DependentUpon>
+    <Content Include="App_Data\aspnet-NerdDinner-20131007133750.mdf" />
+    <Content Include="App_Data\aspnet-NerdDinner-20131007133750_log.ldf">
+      <DependentUpon>aspnet-NerdDinner-20131007133750.mdf</DependentUpon>
     </Content>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -318,6 +323,12 @@
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201310141807359_InitialCreate.resx">
+      <DependentUpon>201310141807359_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

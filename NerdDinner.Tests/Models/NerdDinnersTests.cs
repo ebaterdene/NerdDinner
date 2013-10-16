@@ -7,7 +7,7 @@ using FizzWare.NBuilder;
 using NUnit.Framework;
 using NerdDinner.Models;
 
-namespace NerdDinner.Tests
+namespace NerdDinner.Tests.Models
 {
     [TestFixture]
     public class NerdDinnersTests

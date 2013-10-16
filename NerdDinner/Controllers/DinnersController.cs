@@ -25,16 +25,15 @@ namespace NerdDinner.Controllers
         {
             var dinner = dnRepository.GetDinner(id);
 
-
-            //Error Happens when I 
-            if (id.GetType() != null)
-            {
-                id = 0;
-            }
+            ////Error Happens when I 
+            //if (id.GetType() != null)
+            //{
+            //    id = 0;
+            //}
 
             if (dinner == null)
             {
-                return View("Not_Found", id);
+                return RedirectToRoute("NotFound", new { id });
             }
             else
             {
@@ -45,23 +44,31 @@ namespace NerdDinner.Controllers
 
         // ---- Edit
 
+        // GET: /Dinners/Edit/1
+
         public ActionResult Edit(int id)
         {
             var dinner = dnRepository.GetDinner(id);
 
             if (dinner == null)
             {
-                return View("Not_Found", id);
+                return RedirectToRoute("NotFound", new { id });
             }
+
+            var countries = new[] { "USA", "Afghanistan", "Albania", "Zimbabwe" };
+            ViewData["countries"] = new SelectList(countries, dinner.Country);
 
             return View(dinner);
         }
+
+        // POST: /Dinners/Edit/1
 
         [HttpPost]
         public ActionResult Edit(int id, FormCollection formValues)
         {
 
             var dinner = dnRepository.GetDinner(id);
+            
 
             //----- Argument Null Exception found.
 
@@ -70,27 +77,15 @@ namespace NerdDinner.Controllers
                 dnRepository.Save();
                 return RedirectToAction("Details", new { id = dinner.DinnerID });
             }
+
             return View(dinner);
         }
 
-        // ---- Update
-
-        public void UpdateModel(Dinner dinner)
-        {
-
-            //-- Not sure if Request.Form works here.   ---
-
-            dinner.Title = Request.Form["Title"];
-            dinner.Description = Request.Form["Description"];
-            dinner.EventDate = DateTime.Parse(Request.Form["EventDate"]);
-            dinner.Address = Request.Form["Address"];
-            dinner.Country = Request.Form["Country"];
-            dinner.ContactPhone = Request.Form["ContactPhone"];
-            dnRepository.Save();
-        }
+        
 
         // ---- Create
         
+        // GET: /Dinners/Create
         public ActionResult Create()
         {
             var dinner = new Dinner()
@@ -100,7 +95,8 @@ namespace NerdDinner.Controllers
             return View(dinner);
         }
 
-
+        // POST: /Dinners/Create
+        
         [HttpPost]
         public ActionResult Create(FormCollection formValues)
         {
@@ -114,7 +110,11 @@ namespace NerdDinner.Controllers
             }
             return View(dinner);
         }
+        
 
+        
+        /*
+        [HttpPost]
         public ActionResult Create(Dinner dinner)
         {
             if (ModelState.IsValid)
@@ -127,20 +127,21 @@ namespace NerdDinner.Controllers
 
             return View(dinner);
         }
-
+        */
         // ---- Delete
+
+        // HTTP GET: /Dinners/Delete/1
 
         public ActionResult Delete(int id)
         {
             var dinner = dnRepository.GetDinner(id);
             if (dinner == null)
-            {
-                //-----View is not returning Not_Found
-                return View("Not_Found", id);
-            }
+                return RedirectToRoute("NotFound", new {id} );
             else
                 return View(dinner);
         }
+
+        // HTTP POST: /Dinners/Delete/1
 
         [HttpPost]
         public ActionResult Delete(int id, string confirmButton)
@@ -149,13 +150,19 @@ namespace NerdDinner.Controllers
             var dinner = dnRepository.GetDinner(id);
             if (dinner == null)
             {
-                //-----View is not returning Not_Found
-                return View("Not_Found");
+                return RedirectToRoute("NotFound", new { id });
             }
+
             dnRepository.Delete(dinner);
             dnRepository.Save();
 
             return View("Deleted");
+        }
+
+        [HttpGet]
+        public ViewResult NotFound(int id)
+        {
+            return View("Not_Found", id);
         }
 
 
