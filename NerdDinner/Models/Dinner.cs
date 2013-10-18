@@ -20,6 +20,7 @@ namespace NerdDinner.Models
         [Required]
         public string Description { get; set; }
         [Required]
+        [DataType(DataType.PhoneNumber)]
         public string ContactPhone { get; set; }
         public string Country { get; set; }
         public string Latitude { get; set; }

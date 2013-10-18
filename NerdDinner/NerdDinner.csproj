@@ -164,6 +164,7 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\DinnerFormViewModel.cs" />
     <Compile Include="Controllers\DinnersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\MyDinnersController.cs" />
@@ -300,22 +301,14 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Home\Fourth_Page.cshtml" />
     <Content Include="Views\Home\Fifth_Page.cshtml" />
-    <Content Include="Views\MyDinners\Index.cshtml" />
-    <Content Include="Views\MyDinners\SecondPage.cshtml" />
-    <Content Include="Views\MyDinners\Second_Page.cshtml" />
-    <Content Include="Views\MyDinners\Fetch_Dinner_Data.cshtml" />
-    <Content Include="Views\MyDinners\My_Dinner_Details.cshtml" />
-    <Content Include="Views\MyDinners\Not_Found.cshtml" />
-    <Content Include="Views\MyDinners\My_Dinner_Details_1.cshtml" />
-    <Content Include="Views\MyDinners\View_All_Dinners.cshtml" />
-    <Content Include="Views\MyDinners\View_One_Dinner.cshtml" />
     <Content Include="Views\Dinners\Details.cshtml" />
     <Content Include="Views\Dinners\Index.cshtml" />
-    <Content Include="Views\Dinners\Not_Found.cshtml" />
     <Content Include="Views\Dinners\Edit.cshtml" />
     <Content Include="Views\Dinners\Create.cshtml" />
     <Content Include="Views\Dinners\Delete.cshtml" />
     <Content Include="Views\Dinners\Deleted.cshtml" />
+    <Content Include="Views\Dinners\DinnerForm.cshtml" />
+    <Content Include="Views\Dinners\NotFound.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />

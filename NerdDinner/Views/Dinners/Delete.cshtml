@@ -4,19 +4,23 @@
     ViewBag.Title = "Delete";
 }
 
-<h2>Delete Confirmation</h2>
+<h2>@Model.Title</h2>
 
-<div>
-    <p>Please confirm you want to cancel the dinner titled: 
-        <i>@Model.Title?</i>
-    </p>
-</div>
+
 
 
 
 @using (Html.BeginForm()) {
+    
+    <div>
+        <p>Would you like to proceed with deleting?
+        </p>
+
+    </div>
     <p>
         <input type="submit" value="Delete" /> |
         @Html.ActionLink("Back to List", "Index")
+
     </p>
+    
 }

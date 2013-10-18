@@ -137,7 +137,9 @@ footer {
 
 .site-title a, .site-title a:hover, .site-title a:active {
     background: none;
-    color: #c8c8c8;
+    color: #000000;
+    font-size: 65px;
+    font-family: Edwardian Script ITC;
     outline: none;
     text-decoration: none;
 }

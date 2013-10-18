@@ -4,26 +4,28 @@
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Model.Title</h2>
 
 <fieldset>
    
     
     <legend> @Html.DisplayFor(model => model.Title) </legend>
-        <p> <strong>When: </strong> 
-            @Model.EventDate.ToShortDateString()
-        <strong> at </strong>
-           @Model.EventDate.ToShortDateString()
-        <p> <strong>Where: </strong> 
-            @Model.Address
-        <p> <strong>Desciption: </strong> 
-            @Model.Description
-        <p> <strong>Organizer: </strong> 
-            @Model.HostedBy @Model.ContactPhone
-            <!-- page 54 -->
+    <p> <strong>When: </strong> 
+    @Model.EventDate.ToShortDateString()
+    <strong> at </strong>
+    @Model.EventDate.ToShortDateString()
+    <p> <strong>Where: </strong> 
+    @Model.Address
+    <p> <strong>Desciption: </strong> 
+    @Model.Description
+    <p> <strong>Organizer: </strong> 
+    @Model.HostedBy @Model.ContactPhone
+    <!-- page 54 -->
             
 </fieldset>
+
 <p>
     @Html.ActionLink("Edit", "Edit", new { id=Model.DinnerID }) |
+     @Html.ActionLink("Delete", "Delete", new {id = Model.DinnerID}) |
     @Html.ActionLink("Back to List", "Index")
 </p>

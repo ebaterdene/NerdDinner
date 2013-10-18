@@ -9,14 +9,14 @@
 <ul>
     @foreach (var dinner in Model) { 
         <li>
-            @dinner.Title on @dinner.EventDate.ToShortDateString() @@ @dinner.EventDate.ToShortTimeString()
+            
+            @Html.ActionLink(@dinner.Title, "Details", new {id = dinner.DinnerID}) on 
+            @dinner.EventDate.ToShortDateString() @@ @dinner.EventDate.ToShortTimeString()
         
-            @if (true)
-            {
-                @Html.ActionLink("Edit", "Edit", new {id = dinner.DinnerID})
-                @Html.ActionLink("Details", "Details", new {id = dinner.DinnerID})
-                @Html.ActionLink("Delete", "Delete", new {id = dinner.DinnerID})
-            }
+            
+
+             @*@Html.ActionLink("Edit", "Edit", new {id = dinner.DinnerID})*@
+           @* @Html.ActionLink("Delete", "Delete", new {id = dinner.DinnerID})*@
         
         </li>
     

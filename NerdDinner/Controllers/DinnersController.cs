@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.UI.WebControls;
 using NerdDinner.Models;
 
 namespace NerdDinner.Controllers
@@ -25,12 +26,6 @@ namespace NerdDinner.Controllers
         {
             var dinner = dnRepository.GetDinner(id);
 
-            ////Error Happens when I 
-            //if (id.GetType() != null)
-            //{
-            //    id = 0;
-            //}
-
             if (dinner == null)
             {
                 return RedirectToRoute("NotFound", new { id });
@@ -52,83 +47,97 @@ namespace NerdDinner.Controllers
 
             if (dinner == null)
             {
-                return RedirectToRoute("NotFound", new { id });
+                //return View("Not_Found", id);
+                return RedirectToRoute("NotFound", new {id});
+                //return RedirectToRoute("Not", new { id });
             }
 
-            var countries = new[] { "USA", "Afghanistan", "Albania", "Zimbabwe" };
-            ViewData["countries"] = new SelectList(countries, dinner.Country);
-
-            return View(dinner);
+            return View(new DinnerFormViewModel(dinner));
         }
 
         // POST: /Dinners/Edit/1
 
         [HttpPost]
-        public ActionResult Edit(int id, FormCollection formValues)
+        public ActionResult Edit(int id, DinnerFormViewModel viewModel)
         {
-
-            var dinner = dnRepository.GetDinner(id);
-            
-
-            //----- Argument Null Exception found.
-
-            if (TryUpdateModel(dinner))
+            if (ModelState.IsValid)
             {
+                var dinner = dnRepository.GetDinner(id);
+
+                dinner.Address = viewModel.Address;
+                dinner.ContactPhone = viewModel.ContactPhone;
+                //dinner.DinnerID = viewModel.DinnerID;
+                dinner.Description = viewModel.Description;
+                dinner.HostedBy = viewModel.HostedBy;
+                dinner.EventDate = viewModel.EventDate;
+                dinner.Country = viewModel.Country;
+                dinner.Longtitude = viewModel.Longtitude;
+                dinner.Latitude = viewModel.Latitude;
+                dinner.Title = viewModel.Title;
+
                 dnRepository.Save();
                 return RedirectToAction("Details", new { id = dinner.DinnerID });
             }
+          
+            return View(viewModel);
 
-            return View(dinner);
         }
 
-        
+        private IView DinnerFormViewModel(Dinner dinner)
+        {
+            throw new NotImplementedException();
+        }
 
-        // ---- Create
         
         // GET: /Dinners/Create
         public ActionResult Create()
         {
+            //DinnerFormViewModel viewModel
             var dinner = new Dinner()
                 {
                     EventDate = DateTime.Now.AddDays(7)
                 };
-            return View(dinner);
+            var viewModel = new DinnerFormViewModel(dinner);
+            return View(viewModel);
         }
 
         // POST: /Dinners/Create
         
         [HttpPost]
-        public ActionResult Create(FormCollection formValues)
-        {
-            var dinner = new Dinner();
-            //  ---- Returns null exception error here if dinner is null
-            if (TryUpdateModel(dinner)) // <---
-            {
-                dnRepository.Add(dinner);
-                dnRepository.Save();
-                return RedirectToAction("Details", new {id = dinner.DinnerID});
-            }
-            return View(dinner);
-        }
-        
-
-        
-        /*
-        [HttpPost]
-        public ActionResult Create(Dinner dinner)
+        public ActionResult Create(DinnerFormViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                dinner.HostedBy = "SomeUser";
+                var dinner = new Dinner();
+
+                dinner.Address = viewModel.Address;
+                dinner.ContactPhone = viewModel.ContactPhone;
+                //dinner.DinnerID = viewModel.DinnerID;
+                dinner.Description = viewModel.Description;
+                dinner.HostedBy = viewModel.HostedBy;
+                dinner.EventDate = viewModel.EventDate;
+                dinner.Country = viewModel.Country;
+                dinner.Longtitude = viewModel.Longtitude;
+                dinner.Latitude = viewModel.Latitude;
+                dinner.Title = viewModel.Title;
                 dnRepository.Add(dinner);
                 dnRepository.Save();
                 return RedirectToAction("Details", new { id = dinner.DinnerID });
             }
+            return View(viewModel);
 
-            return View(dinner);
+
+            //var dinner = new Dinner();
+            ////  ---- Returns null exception error here if dinner is null
+            //if (TryUpdateModel(dinner)) // <---
+            //{
+            //    dnRepository.Add(dinner);
+            //    dnRepository.Save();
+            //    return RedirectToAction("Details", new {id = dinner.DinnerID});
+            //}
+            //return View(dinner);
         }
-        */
-        // ---- Delete
+        
 
         // HTTP GET: /Dinners/Delete/1
 
@@ -144,7 +153,7 @@ namespace NerdDinner.Controllers
         // HTTP POST: /Dinners/Delete/1
 
         [HttpPost]
-        public ActionResult Delete(int id, string confirmButton)
+        public ActionResult DeletePost(int id)
         {
 
             var dinner = dnRepository.GetDinner(id);
@@ -162,7 +171,7 @@ namespace NerdDinner.Controllers
         [HttpGet]
         public ViewResult NotFound(int id)
         {
-            return View("Not_Found", id);
+            return View(id);
         }
 
 
