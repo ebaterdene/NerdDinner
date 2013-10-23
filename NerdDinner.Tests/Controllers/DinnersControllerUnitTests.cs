@@ -44,67 +44,46 @@ namespace NerdDinner.Tests.Controllers
 
         protected DinnersController Controller { get; set; }
 
+
         [Test]
-        [TestCase(1)]
-        [TestCase(5)]
-        [TestCase(9)]
-        [TestCase(10)]
-        [TestCase(29)]
-        public void IndexGet(int numberOfDinners)
+        [TestCase(-1, 1, 10)]
+        [TestCase(0, 1, 10)]
+        [TestCase(1, 11, 20)]
+        [TestCase(2, 21, 30)]
+        [TestCase(9, 91, 100)]
+        [TestCase(10, 101, 105)]
+        [TestCase(11, null, null)]
+        public void Index_Get_Page(int page, int? minDinnerId, int? maxDinnerId)
         {
             // Arrange
+
             var dinners = Builder<Dinner>
-                .CreateListOfSize(numberOfDinners)
-                .Build().AsQueryable();
-
-
-            this.Repository.FindUpcomingDinners().Returns(dinners);
-
-            // Act
-            var result = (ViewResult) this.Controller.Index();
-            var model = (IList<Dinner>)result.ViewData.Model;
-
-
-            // Assert
-            this.Repository.Received()
-                .FindUpcomingDinners()
+                .CreateListOfSize(105)
+                .Build()
+                .AsQueryable()
                 ;
-            Assert.IsNotNull(model);
-            Assert.That(model.Count(), Is.EqualTo(numberOfDinners));
-            Assert.IsNotNullOrEmpty(model.First().Title);
-            Assert.That(model, Is.EquivalentTo(dinners));
-        }
-
-        [Test]
-        [TestCase(0, 1)]
-        [TestCase(0, 9)]
-        [TestCase(0, 29)]
-        [TestCase(0, 1)]
-        [TestCase(1, 9)]
-        [TestCase(1, 99)]
-        public void Index_Get_Page(int page, int numberOfDinners)
-        {
-            // Arrange
-            const int pageSize = 10;
-
-            var dinners = Builder<Dinner>
-                .CreateListOfSize(numberOfDinners)
-                .Build().AsQueryable();
 
             this.Repository.FindUpcomingDinners().Returns(dinners);
-            var paginatedDinners = dinners
-                .OrderBy(d => d.EventDate)
-                .Skip(page * pageSize)
-                .Take(pageSize)
-                .ToList();
 
             // Act
             var result = (ViewResult)this.Controller.Index(page);
             var model = (IList<Dinner>)result.ViewData.Model;
 
             // Assert
-            Assert.NotNull(model);
-            Assert.That(model, Is.EquivalentTo(paginatedDinners));
+            var dinnerIds = model.Select(row => row.DinnerID).ToList();
+            var resultsAreExpected = minDinnerId.HasValue && maxDinnerId.HasValue;
+            if (resultsAreExpected)
+            {
+                var count = maxDinnerId.Value + 1 - minDinnerId.Value;
+                Assert.That(dinnerIds, Has.Count.EqualTo(count));
+
+                var expectedRange = Enumerable.Range(minDinnerId.Value, count).ToArray();
+                Assert.That(dinnerIds, Is.EquivalentTo(expectedRange));
+            }
+            else
+            {
+                Assert.That(model, Is.Empty);
+            }
 
         }
 

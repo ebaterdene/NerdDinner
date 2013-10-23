@@ -16,6 +16,14 @@ namespace NerdDinner.Models
             return entities.Dinners;
         }
 
+
+        public IQueryable<Dinner> FindDinnersByText(string q)
+        {
+            return entities.Dinners.Where(d => d.Title.Contains(q)
+                            || d.Description.Contains(q)
+                            || d.HostedBy.Contains(q));
+        }
+
         public IQueryable<Dinner> FindUpcomingDinners()
         {
             return from dinner in entities.Dinners

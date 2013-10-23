@@ -18,16 +18,10 @@ namespace NerdDinner.Controllers
             _repository = repository;
         }
 
-        // ---- Index
+        // GET: /Dinners/
+        //      /Dinners/Page/1
 
-        public ActionResult Index()
-        {
-            //const int pageSize = 10;
-            var upcomingDinners = _repository.FindUpcomingDinners().ToList();
-
-            return View(upcomingDinners);
-        }
-
+        /* Index: Version 2 */
         public ActionResult Index(int page = 0)
         {
             const int pageSize = 10;
@@ -36,10 +30,9 @@ namespace NerdDinner.Controllers
                                                   .Skip(page * pageSize)
                                                   .Take(pageSize)
                                                   .ToList();
-
             return View(paginatedDinners);
         }
-
+       
         // ---- Details
         public ActionResult Details(int id)
         {
