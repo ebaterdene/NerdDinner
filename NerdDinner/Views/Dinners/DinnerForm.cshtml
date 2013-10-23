@@ -5,8 +5,6 @@
 @using (Html.BeginForm())
 {
     @Html.ValidationSummary(true)
-    <legend></legend>
-    <fieldset>
         @Html.HiddenFor(model => model.DinnerID)
 
         <p>
@@ -48,12 +46,7 @@
         
         <p>
             @Html.LabelFor(model => model.Country)
-            @Html.EditorFor(model => model.Country)
-            @*  
-                @Html.DropDownListFor(model => model.Country, Model.Country)
-                Err: populate countries in a combobox.
-            
-            *@
+            @Html.DropDownListFor(model => model.Country, Model.Countries)
             @Html.ValidationMessageFor(model => model.Country)
         </p>
         
@@ -69,11 +62,8 @@
             @Html.ValidationMessageFor(model => model.Longtitude)
         </p>
 
-        
         <p>
             <input type="submit" value="Save" />
         </p>
-    </fieldset>
-    
     
 }

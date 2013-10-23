@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.UI.WebControls;
@@ -10,25 +11,43 @@ namespace NerdDinner.Controllers
 {
     public class DinnersController : Controller
     {
+        private readonly IDinnerRepository _repository;
+
+        public DinnersController(IDinnerRepository repository)
+        {
+            _repository = repository;
+        }
 
         // ---- Index
-        
+
         public ActionResult Index()
         {
-            var dinners = dnRepository.FindUpcomingDinners().ToList();
+            //const int pageSize = 10;
+            var upcomingDinners = _repository.FindUpcomingDinners().ToList();
 
-            return View(dinners);
+            return View(upcomingDinners);
+        }
+
+        public ActionResult Index(int page = 0)
+        {
+            const int pageSize = 10;
+            var upcomingDinners = _repository.FindUpcomingDinners().ToList();
+            var paginatedDinners = upcomingDinners.OrderBy(d => d.EventDate)
+                                                  .Skip(page * pageSize)
+                                                  .Take(pageSize)
+                                                  .ToList();
+
+            return View(paginatedDinners);
         }
 
         // ---- Details
-
         public ActionResult Details(int id)
         {
-            var dinner = dnRepository.GetDinner(id);
+            Dinner dinner = _repository.GetDinner(id);
 
             if (dinner == null)
             {
-                return RedirectToRoute("NotFound", new { id });
+                return RedirectToAction("NotFound", new { id });
             }
             else
             {
@@ -43,13 +62,11 @@ namespace NerdDinner.Controllers
 
         public ActionResult Edit(int id)
         {
-            var dinner = dnRepository.GetDinner(id);
+            var dinner = _repository.GetDinner(id);
 
             if (dinner == null)
             {
-                //return View("Not_Found", id);
-                return RedirectToRoute("NotFound", new {id});
-                //return RedirectToRoute("Not", new { id });
+                return RedirectToAction("NotFound", new { id });
             }
 
             return View(new DinnerFormViewModel(dinner));
@@ -58,41 +75,33 @@ namespace NerdDinner.Controllers
         // POST: /Dinners/Edit/1
 
         [HttpPost]
-        public ActionResult Edit(int id, DinnerFormViewModel viewModel)
+        public ActionResult Edit(DinnerFormViewModel viewModel)
         {
             if (ModelState.IsValid)
             {
-                var dinner = dnRepository.GetDinner(id);
+                var dinner = _repository.GetDinner(viewModel.DinnerID);
 
                 dinner.Address = viewModel.Address;
                 dinner.ContactPhone = viewModel.ContactPhone;
-                //dinner.DinnerID = viewModel.DinnerID;
-                dinner.Description = viewModel.Description;
-                dinner.HostedBy = viewModel.HostedBy;
-                dinner.EventDate = viewModel.EventDate;
                 dinner.Country = viewModel.Country;
-                dinner.Longtitude = viewModel.Longtitude;
+                dinner.Description = viewModel.Description;
+                dinner.EventDate = viewModel.EventDate;
+                dinner.HostedBy = viewModel.HostedBy;
                 dinner.Latitude = viewModel.Latitude;
+                dinner.Longtitude = viewModel.Longtitude;
                 dinner.Title = viewModel.Title;
 
-                dnRepository.Save();
-                return RedirectToAction("Details", new { id = dinner.DinnerID });
+                _repository.Save();
+                return RedirectToAction("Details", new { id = viewModel.DinnerID });
             }
           
             return View(viewModel);
 
         }
-
-        private IView DinnerFormViewModel(Dinner dinner)
-        {
-            throw new NotImplementedException();
-        }
-
         
         // GET: /Dinners/Create
         public ActionResult Create()
         {
-            //DinnerFormViewModel viewModel
             var dinner = new Dinner()
                 {
                     EventDate = DateTime.Now.AddDays(7)
@@ -112,7 +121,6 @@ namespace NerdDinner.Controllers
 
                 dinner.Address = viewModel.Address;
                 dinner.ContactPhone = viewModel.ContactPhone;
-                //dinner.DinnerID = viewModel.DinnerID;
                 dinner.Description = viewModel.Description;
                 dinner.HostedBy = viewModel.HostedBy;
                 dinner.EventDate = viewModel.EventDate;
@@ -120,22 +128,15 @@ namespace NerdDinner.Controllers
                 dinner.Longtitude = viewModel.Longtitude;
                 dinner.Latitude = viewModel.Latitude;
                 dinner.Title = viewModel.Title;
-                dnRepository.Add(dinner);
-                dnRepository.Save();
+
+                _repository.Add(dinner);
+                _repository.Save();
+                
                 return RedirectToAction("Details", new { id = dinner.DinnerID });
             }
-            return View(viewModel);
 
+            return View(viewModel); 
 
-            //var dinner = new Dinner();
-            ////  ---- Returns null exception error here if dinner is null
-            //if (TryUpdateModel(dinner)) // <---
-            //{
-            //    dnRepository.Add(dinner);
-            //    dnRepository.Save();
-            //    return RedirectToAction("Details", new {id = dinner.DinnerID});
-            //}
-            //return View(dinner);
         }
         
 
@@ -143,10 +144,11 @@ namespace NerdDinner.Controllers
 
         public ActionResult Delete(int id)
         {
-            var dinner = dnRepository.GetDinner(id);
+            var dinner = _repository.GetDinner(id);
             if (dinner == null)
-                return RedirectToRoute("NotFound", new {id} );
+                return RedirectToAction("NotFound", new { id });
             else
+                //returns a ViewResult
                 return View(dinner);
         }
 
@@ -156,14 +158,14 @@ namespace NerdDinner.Controllers
         public ActionResult DeletePost(int id)
         {
 
-            var dinner = dnRepository.GetDinner(id);
+            var dinner = _repository.GetDinner(id);
             if (dinner == null)
             {
-                return RedirectToRoute("NotFound", new { id });
+                return RedirectToAction("NotFound", new { id });
             }
 
-            dnRepository.Delete(dinner);
-            dnRepository.Save();
+            _repository.Delete(dinner);
+            _repository.Save();
 
             return View("Deleted");
         }
@@ -173,8 +175,5 @@ namespace NerdDinner.Controllers
         {
             return View(id);
         }
-
-
-        DinnerRepository dnRepository = new DinnerRepository();
     }
 }

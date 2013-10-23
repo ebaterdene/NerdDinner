@@ -63,9 +63,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Controllers\DinnersControllerUnitTests.cs" />
+    <Compile Include="Controllers\Temp.cs" />
     <Compile Include="Models\DinnerFormViewModelTests.cs" />
     <Compile Include="Models\DinnerRepositoryTests.cs" />
-    <Compile Include="Controllers\DinnersControllerTests.cs" />
+    <Compile Include="Controllers\DinnersControllerIntegrationTests.cs" />
     <Compile Include="Models\NerdDinnersTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -81,6 +83,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Fake\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>

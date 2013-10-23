@@ -5,7 +5,7 @@ using System.Web;
 
 namespace NerdDinner.Models
 {
-    public class DinnerRepository
+    public class DinnerRepository : IDinnerRepository
     {
         //private NerdDinnerEntities entities = new NerdDinnerEntities();
         private NerdDinners entities = new NerdDinners();
@@ -27,7 +27,8 @@ namespace NerdDinner.Models
 
         public Dinner GetDinner(int id)
         {
-            return entities.Dinners.FirstOrDefault(d => d.DinnerID == id);
+            //returns null if dinner not found.
+            return entities.Dinners.FirstOrDefault(d => d.DinnerID == id);;
         }
 
         public void Add(Dinner dinner)

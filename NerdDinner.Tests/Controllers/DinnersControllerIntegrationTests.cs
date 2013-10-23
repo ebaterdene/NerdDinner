@@ -14,13 +14,14 @@ using System.Web.Mvc;
 namespace NerdDinner.Tests.Controllers
 {
     [TestFixture]
-    public class DinnersControllerTests
+    public class DinnersControllerIntegrationTests
     {
         [SetUp]
         public void SetThisBeforeTest()
         {
             // Arrange
-            this.Controller = new DinnersController();
+            this.Repository = Substitute.For<IDinnerRepository>();
+            this.Controller = new DinnersController(this.Repository);
 
             var routeData = new RouteData();
             var httpContext = Substitute.For<HttpContextBase>();
@@ -37,6 +38,8 @@ namespace NerdDinner.Tests.Controllers
 
         }
 
+        protected IDinnerRepository Repository { get; set; }
+
         protected DinnersController Controller { get; set; }
 
 
@@ -44,19 +47,71 @@ namespace NerdDinner.Tests.Controllers
         public void IndexGet()
         {
             // Arrange
-          
+            const int numberOfDinners = 10;
+            var dinners = Builder<Dinner>
+                .CreateListOfSize(numberOfDinners)
+                .Build()
+                .AsQueryable()
+                ;
+
+            this.Repository.FindUpcomingDinners()
+                .Returns(dinners)
+                ;
 
             // Act
-            var result = (ViewResult) this.Controller.Index();
-            var model = (IList<Dinner>) result.ViewData.Model;
-            
+            var result = (ViewResult)this.Controller.Index();
+            var model = (IList<Dinner>)result.ViewData.Model;
+
 
             // Assert
             //Assert.AreEqual("Index", result.ViewName); //<-- Error here.
+            this.Repository.Received()
+                .FindUpcomingDinners()
+                ;
+
             Assert.IsNotNull(model);
-            Assert.That(model.Count(), Is.EqualTo(1));
-            Assert.That(model.First().Title, Is.EqualTo("Fine Wine"));
+            Assert.That(model.Count(), Is.EqualTo(numberOfDinners));
+            Assert.IsNotNullOrEmpty(model.First().Title);
+            Assert.That(model, Is.EquivalentTo(dinners));
         }
+
+
+        [Test]
+        public void Index_Get_Page_0()
+        {
+            // Arrange
+            var page = 0;
+
+
+            // Act
+            var result = (ViewResult) this.Controller.Index(page);
+            var model = (IList<Dinner>)result.ViewData.Model;
+
+            // Assert
+            Assert.NotNull(model);
+
+            Assert.That(model.Count, Is.GreaterThanOrEqualTo(1));
+
+        }
+
+        [Test]
+        public void Index_Get_Page_1()
+        {
+            // Arrange
+            var page = 1;
+
+            // Act
+            var result = (ViewResult)this.Controller.Index(page);
+            var model = (IList<Dinner>)result.ViewData.Model;
+
+            // Assert
+            Assert.NotNull(model);
+
+            Assert.That(model.Count, Is.GreaterThanOrEqualTo(0));
+
+
+        }
+
 
         [Test]
         public void DetailsGet()
@@ -97,8 +152,10 @@ namespace NerdDinner.Tests.Controllers
             // Assure
             Assert.That(result, Is.Not.Null);
             Assert.That(result.RouteValues.Values.FirstOrDefault(), Is.EqualTo(id));
-            Assert.That(result.RouteName, Is.EqualTo("NotFound"));
-            Assert.That(result.RouteValues, Has.Count.EqualTo(1));
+            //Assert.That(result.RouteName, Is.EqualTo("NotFound"));
+            Assert.That(result.RouteName, Is.EqualTo(""));
+
+            Assert.That(result.RouteValues.Values.ElementAt(1), Is.EqualTo("NotFound"));
             Assert.That(result.RouteValues.ContainsKey("id"));
             Assert.That(result.RouteValues.ContainsValue(id));
         }
@@ -141,10 +198,17 @@ namespace NerdDinner.Tests.Controllers
 
             // Assure
             Assert.That(result, Is.Not.Null);
-            Assert.That(result.RouteName, Is.EqualTo("NotFound"));
-            Assert.That(result.RouteValues, Has.Count.EqualTo(1));
+            Assert.That(result.RouteName, Is.EqualTo(""));
+
+            Assert.That(result.RouteValues.Values.ElementAt(1), Is.EqualTo("NotFound"));
             Assert.That(result.RouteValues.ContainsKey("id"));
             Assert.That(result.RouteValues.ContainsValue(id));
+
+
+            //Assert.That(result.RouteName, Is.EqualTo("NotFound"));
+            //Assert.That(result.RouteValues, Has.Count.EqualTo(1));
+            //Assert.That(result.RouteValues.ContainsKey("id"));
+            //Assert.That(result.RouteValues.ContainsValue(id));
 
         }
 
@@ -170,7 +234,7 @@ namespace NerdDinner.Tests.Controllers
             };
 
             //DinnerFormViewModel
-            var result = this.Controller.Edit(tempDinnerId, viewModel) as RedirectToRouteResult;
+            var result = this.Controller.Edit(viewModel) as RedirectToRouteResult;
             // Need to convert result into a dinner So I can compare both.
 
             
@@ -199,10 +263,26 @@ namespace NerdDinner.Tests.Controllers
                 Is.EqualTo("Sample some great tasting fine wines."), "Description");
             Assert.That(dinnerEditedVersion.ContactPhone,
                 Is.EqualTo("(206) 123-1324"), "ContactPhone");
+        }
 
-            // These are UnEdited.
 
+        [Test]
+        public void Edit_Post_With_Incorrect_Model()
+        {
+            // Arrange
+            var repositoryWithTwoDinners = getRepositoryWithTwoDinners();
+            var dinners = repositoryWithTwoDinners.FindAllDinners();
+            var dinner = dinners.ToList().FirstOrDefault();
+            int tempDinnerId = dinner.DinnerID;
+            var viewModel = new DinnerFormViewModel();
 
+            // Act
+            this.Controller.ModelState.AddModelError("Someproperty", "Some Message");
+            var result = this.Controller.Edit(viewModel) as ViewResult;
+
+            // Assure
+            Assert.IsNotNull(result);
+            Assert.That(result.Model, Is.EqualTo(viewModel));
         }
 
         [Test]
@@ -217,9 +297,7 @@ namespace NerdDinner.Tests.Controllers
             var dinner = dinners.ToList().FirstOrDefault();
             id = dinner.DinnerID;
             var result = this.Controller.Create() as ViewResult;
-            var model = result.ViewData.Model as Dinner;
-
-
+            var model = result.ViewData.Model as DinnerFormViewModel;
 
             // Assure
             Assert.IsNotNull(model);
@@ -227,13 +305,11 @@ namespace NerdDinner.Tests.Controllers
             Assert.That(model.Title, Is.Null);
             Assert.That(model.EventDate.ToShortDateString(),
                     Is.EqualTo(DateTime.Now.AddDays(7).ToShortDateString()));
-
-
         }
 
 
         [Test]
-        public void CreatePost()
+        public void CreatePost_With_Correct_Dinner_Model()
         {
             // Arrange
             var repositoryWithTwoDinners = getRepositoryWithTwoDinners();
@@ -261,37 +337,23 @@ namespace NerdDinner.Tests.Controllers
 
         }
 
-        /* Previous version for CreatePostTest
         [Test]
-        public void CreatePost()
+        public void CreatePost_With_InCorrect_Dinner_Model()
         {
             // Arrange
             var repositoryWithTwoDinners = getRepositoryWithTwoDinners();
 
+            var viewModel = new DinnerFormViewModel();
+
             // Act
-            var formCollection = new FormCollection()
-                {
-                    {"Title", "Test Dinner"},
-                    {"EventDate", DateTime.Today.AddHours(18).ToString()},
-                    {"HostedBy", "Joe User"},
-                    {"Description", "This is a test of the create dinner method."},
-                    {"ContactPhone", "123-456-7890"},
-                };
+            this.Controller.ModelState.AddModelError("Someproperty", "Some Message");
+            var result = this.Controller.Create(viewModel) as ViewResult;
 
+            // Assure
+            Assert.IsNotNull(result);
+            Assert.That(result.Model, Is.EqualTo(viewModel));
 
-            this.Controller.ValueProvider = formCollection.ToValueProvider();
-            var result = this.Controller.Create(formCollection) as RedirectToRouteResult;
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            var repository = new DinnerRepository();
-            var all = repository.FindAllDinners();
-            Assert.That(all.Count() , Is.EqualTo(3));
-            var dinner = all.ToList().Last();
-            Assert.That(dinner.Title, Is.EqualTo("Test Dinner"));
         }
-        */
-
 
 
 
@@ -373,20 +435,20 @@ namespace NerdDinner.Tests.Controllers
 
         }
 
-        [Test]
-        public void NotFoundTest()
-        {
-            // Arrange
-            var tempId = int.MaxValue;
+        //[Test]
+        //public void NotFoundTest()
+        //{
+        //    // Arrange
+        //    var tempId = int.MaxValue;
 
-            // Act
-            var result = this.Controller.NotFound(tempId) as ViewResult;
-            var outcome = result.Model;
+        //    // Act
+        //    var result = this.Controller.NotFound(tempId) as ViewResult;
+        //    var outcome = result.Model;
 
-            //Assert
-            Assert.IsNotNull(result);
-            Assert.That(outcome, Is.EqualTo(tempId));
-        }
+        //    //Assert
+        //    Assert.IsNotNull(result);
+        //    Assert.That(outcome, Is.EqualTo(tempId));
+        //}
 
 
         // -- Helper Methods

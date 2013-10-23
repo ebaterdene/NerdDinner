@@ -25,7 +25,6 @@ namespace NerdDinner
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
             AuthConfig.RegisterAuth();
-
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<NerdDinners>());
         }
     }
