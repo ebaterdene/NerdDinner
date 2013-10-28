@@ -7,24 +7,24 @@ using System.Web;
 
 namespace NerdDinner.Models
 {
+    [MetadataType(typeof(DinnerValidation))]
     public class Dinner
     {
         public int DinnerID { get; set; }
-        [Required]
+
         public string Title { get; set; }
-        [Required]
+
         public DateTime EventDate { get; set; }
         public string Address { get; set; }
-        [Required]
+
         public string HostedBy { get; set; }
-        [Required]
+
         public string Description { get; set; }
-        [Required]
-        [DataType(DataType.PhoneNumber)]
+
         public string ContactPhone { get; set; }
         public string Country { get; set; }
         public string Latitude { get; set; }
-        public string Longtitude { get; set; }
+        public string Longitude { get; set; }
 
         public virtual ICollection<RSVP> RSVPs { get; set; }
 
@@ -32,5 +32,11 @@ namespace NerdDinner.Models
         {
             this.RSVPs = new Collection<RSVP>();
         }
+
+        public bool IsHostedBy(string userName)
+        {
+            return userName.ToLower() == HostedBy.ToLower();
+        }
+
     }
 }

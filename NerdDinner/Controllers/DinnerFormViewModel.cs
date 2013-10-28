@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using NerdDinner.Models;
@@ -42,6 +43,8 @@ namespace NerdDinner.Controllers
 
         public string Longtitude { get; set; }
 
+        public virtual ICollection<RSVP> RSVPs { get; set; }
+
         public DinnerFormViewModel(Dinner dinner)
         {
             Countries = new SelectList(_countries, dinner.Country);
@@ -53,13 +56,25 @@ namespace NerdDinner.Controllers
             this.EventDate = dinner.EventDate;
             this.ContactPhone = dinner.ContactPhone;
             this.Country = dinner.Country;
-            this.Longtitude = dinner.Longtitude;
+            this.Longtitude = dinner.Longitude;
             this.Latitude = dinner.Latitude;
         }
 
         public DinnerFormViewModel()
         {
             Countries = new SelectList(_countries);   
+        }
+
+        public bool IsHostedBy(IPrincipal user)
+        {
+            return HostedBy == user.Identity.Name;
+        }
+
+        public object IsUserRegistered(IPrincipal user)
+        {
+            //return RSVPs.Any( r => r.AttendeeName.Equals(user.Identity.Name,StringComparison.OrdinalIgnoreCase));
+
+            throw new NotImplementedException(); // p.122
         }
     }
 }

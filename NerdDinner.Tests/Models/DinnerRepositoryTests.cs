@@ -69,6 +69,23 @@ namespace NerdDinner.Tests.Models
         }
 
         [Test]
+        public void TitleIsRequired()
+        {
+            var dinner = Builder<Dinner>
+                .CreateNew()
+                .Build()
+                ;
+
+            dinner.Title = null;
+
+            var repository = new DinnerRepository();
+            repository.Add(dinner);
+
+            Assert.Throws<System.Data.Entity.Validation.DbEntityValidationException>(repository.Save);
+
+        }
+
+        [Test]
         public void FindUpcomingDinners()
         {
             // Arrange

@@ -194,16 +194,13 @@
     <Compile Include="Models\AccountModels.cs" />
     <Compile Include="Models\Dinner.cs" />
     <Compile Include="Models\DinnerRepository.cs" />
+    <Compile Include="Models\DinnerValidation.cs" />
     <Compile Include="Models\IDinnerRepository.cs" />
     <Compile Include="Models\NerdDinners.cs" />
     <Compile Include="Models\RSVP.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-NerdDinner-20131007133750.mdf" />
-    <Content Include="App_Data\aspnet-NerdDinner-20131007133750_log.ldf">
-      <DependentUpon>aspnet-NerdDinner-20131007133750.mdf</DependentUpon>
-    </Content>
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_glass_55_fbf9ee_1x400.png" />
@@ -324,6 +321,7 @@
     <Content Include="Views\Dinners\Deleted.cshtml" />
     <Content Include="Views\Dinners\DinnerForm.cshtml" />
     <Content Include="Views\Dinners\NotFound.cshtml" />
+    <Content Include="Views\Dinners\InvalidOwner.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
@@ -337,6 +335,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="Views\Page\" />
   </ItemGroup>
   <PropertyGroup>

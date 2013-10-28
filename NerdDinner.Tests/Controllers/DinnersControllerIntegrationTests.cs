@@ -323,7 +323,7 @@ namespace NerdDinner.Tests.Controllers
                     Description = "Get your breakfast fixed.",
                     HostedBy = "Luke!",
                     Latitude = "47.54145",
-                    Longtitude = "-122.34334"
+                    Longitude = "-122.34334"
                 };
 
             // Act

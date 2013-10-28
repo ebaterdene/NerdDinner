@@ -22,6 +22,7 @@ namespace NerdDinner.Controllers
         //      /Dinners/Page/1
 
         /* Index: Version 2 */
+        [Authorize]
         public ActionResult Index(int page = 0)
         {
             const int pageSize = 10;
@@ -34,6 +35,7 @@ namespace NerdDinner.Controllers
         }
        
         // ---- Details
+        [Authorize]
         public ActionResult Details(int id)
         {
             Dinner dinner = _repository.GetDinner(id);
@@ -44,7 +46,8 @@ namespace NerdDinner.Controllers
             }
             else
             {
-                return View(dinner);
+                var viewModel = new DinnerFormViewModel(dinner);
+                return View(viewModel);
             }
         }
 
@@ -52,10 +55,16 @@ namespace NerdDinner.Controllers
         // ---- Edit
 
         // GET: /Dinners/Edit/1
-
+        [HttpGet,Authorize]
         public ActionResult Edit(int id)
         {
             var dinner = _repository.GetDinner(id);
+
+            //if (!dinner.IsHostedBy(User.Identity.Name))
+            if (dinner == null || (!dinner.IsHostedBy(User.Identity.Name)))
+            {
+                return View("InvalidOwner");
+            }
 
             if (dinner == null)
             {
@@ -67,9 +76,15 @@ namespace NerdDinner.Controllers
 
         // POST: /Dinners/Edit/1
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public ActionResult Edit(DinnerFormViewModel viewModel)
         {
+            var dinner1 = _repository.GetDinner(viewModel.DinnerID);
+            if (!dinner1.IsHostedBy(User.Identity.Name))
+            {
+                return View("InvalidOwner");
+            }
+
             if (ModelState.IsValid)
             {
                 var dinner = _repository.GetDinner(viewModel.DinnerID);
@@ -81,7 +96,7 @@ namespace NerdDinner.Controllers
                 dinner.EventDate = viewModel.EventDate;
                 dinner.HostedBy = viewModel.HostedBy;
                 dinner.Latitude = viewModel.Latitude;
-                dinner.Longtitude = viewModel.Longtitude;
+                dinner.Longitude = viewModel.Longtitude;
                 dinner.Title = viewModel.Title;
 
                 _repository.Save();
@@ -93,6 +108,7 @@ namespace NerdDinner.Controllers
         }
         
         // GET: /Dinners/Create
+        [HttpGet,Authorize]
         public ActionResult Create()
         {
             var dinner = new Dinner()
@@ -105,7 +121,7 @@ namespace NerdDinner.Controllers
 
         // POST: /Dinners/Create
         
-        [HttpPost]
+        [HttpPost, Authorize]
         public ActionResult Create(DinnerFormViewModel viewModel)
         {
             if (ModelState.IsValid)
@@ -118,7 +134,7 @@ namespace NerdDinner.Controllers
                 dinner.HostedBy = viewModel.HostedBy;
                 dinner.EventDate = viewModel.EventDate;
                 dinner.Country = viewModel.Country;
-                dinner.Longtitude = viewModel.Longtitude;
+                dinner.Longitude = viewModel.Longtitude;
                 dinner.Latitude = viewModel.Latitude;
                 dinner.Title = viewModel.Title;
 
@@ -134,7 +150,7 @@ namespace NerdDinner.Controllers
         
 
         // HTTP GET: /Dinners/Delete/1
-
+        [HttpGet,Authorize]
         public ActionResult Delete(int id)
         {
             var dinner = _repository.GetDinner(id);
@@ -147,7 +163,7 @@ namespace NerdDinner.Controllers
 
         // HTTP POST: /Dinners/Delete/1
 
-        [HttpPost]
+        [HttpPost, Authorize]
         public ActionResult DeletePost(int id)
         {
 
@@ -163,7 +179,9 @@ namespace NerdDinner.Controllers
             return View("Deleted");
         }
 
-        [HttpGet]
+        
+
+        [HttpGet, Authorize]
         public ViewResult NotFound(int id)
         {
             return View(id);

@@ -44,6 +44,39 @@ namespace NerdDinner.Tests.Controllers
 
         protected DinnersController Controller { get; set; }
 
+        [Test]
+        [TestCase("Create", typeof(HttpGetAttribute))]
+        [TestCase("Create", typeof(HttpPostAttribute))]
+        [TestCase("Edit", null)]
+        [TestCase("Edit", typeof(HttpGetAttribute))]
+        [TestCase("Edit", typeof(HttpPostAttribute))]
+        [TestCase("Delete", typeof(HttpGetAttribute))]
+        [TestCase("DeletePost", typeof(HttpPostAttribute))]
+        public void MethodRequiresAuthorizedUser(string methodName, Type httpVerb)
+        {
+            if (httpVerb == null) return; // ? HttpGet | HttpPost
+
+            var methodInfos = this.Controller
+                .GetType()
+                .GetMethods()
+                .Where(method => method.Name == methodName)
+                .Where(method => httpVerb == null ? !method.GetCustomAttributes(inherit: true).Any() : method.GetCustomAttributes(httpVerb, true).Any())
+                ;
+
+            var methodInfo = methodInfos.Single();
+
+            //var controller = new DinnersController(new DinnerRepository());
+            //methodInfo.Invoke(controller, new object[] { 1 });
+
+            var attributes = methodInfo.GetCustomAttributes(typeof(AuthorizeAttribute), inherit: true)
+                .Cast<AuthorizeAttribute>()
+                .ToList()
+                ;
+
+            Assert.That(attributes.Any());
+
+        }
+
 
         [Test]
         [TestCase(-1, 1, 10)]
@@ -201,7 +234,7 @@ namespace NerdDinner.Tests.Controllers
             Assert.That(dinner.EventDate, Is.EqualTo(viewModel.EventDate), "EventDate");
             Assert.That(dinner.HostedBy, Is.EqualTo(viewModel.HostedBy), "HostedBy");
             Assert.That(dinner.Latitude, Is.EqualTo(viewModel.Latitude), "Latitude");
-            Assert.That(dinner.Longtitude, Is.EqualTo(viewModel.Longtitude), "Longitude");
+            Assert.That(dinner.Longitude, Is.EqualTo(viewModel.Longtitude), "Longitude");
             Assert.That(dinner.Title, Is.EqualTo(viewModel.Title), "Title");
 
             this.Repository.Received().Save();
@@ -275,7 +308,7 @@ namespace NerdDinner.Tests.Controllers
             Assert.That(dinnerThatWasAdded.HostedBy, Is.EqualTo(viewModel.HostedBy));
             Assert.That(dinnerThatWasAdded.EventDate, Is.EqualTo(viewModel.EventDate));
             Assert.That(dinnerThatWasAdded.Country, Is.EqualTo(viewModel.Country));
-            Assert.That(dinnerThatWasAdded.Longtitude, Is.EqualTo(viewModel.Longtitude));
+            Assert.That(dinnerThatWasAdded.Longitude, Is.EqualTo(viewModel.Longtitude));
             Assert.That(dinnerThatWasAdded.Latitude, Is.EqualTo(viewModel.Latitude));
             Assert.That(dinnerThatWasAdded.Title, Is.EqualTo(viewModel.Title));
             Repository.Received().Add(dinnerThatWasAdded);

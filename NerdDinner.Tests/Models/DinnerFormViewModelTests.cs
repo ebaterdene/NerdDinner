@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using FizzWare.NBuilder;
+using NSubstitute;
 using NUnit.Framework;
 using NerdDinner.Controllers;
 using NerdDinner.Models;
@@ -35,8 +38,57 @@ namespace NerdDinner.Tests.Models
             Assert.That(model.Description, Is.EqualTo(dinner.Description), "Description");
             Assert.That(model.EventDate, Is.EqualTo(dinner.EventDate), "EventDate");
             Assert.That(model.Latitude, Is.EqualTo(dinner.Latitude), "Latitude");
-            Assert.That(model.Longtitude, Is.EqualTo(dinner.Longtitude), "Longtitude");
+            Assert.That(model.Longtitude, Is.EqualTo(dinner.Longitude), "Longitude");
             Assert.That(model.Title, Is.EqualTo(dinner.Title), "Title");
         }
+
+        [Test]
+        [TestCase("Enkh" ,"Enkh", true)]
+        [TestCase("Enkh" ,"Nick", false)]
+        [TestCase("Nick" ,"Nick", true)]
+        public void IsHostedBy(string hostedBy, string currentUser, bool expectedResult)
+        {
+            // Arrange
+            var viewModel = new DinnerFormViewModel()
+                {
+                    HostedBy = hostedBy
+                };
+
+            var user = Substitute.For<IPrincipal>();
+            user.Identity.Name
+                .Returns(currentUser);
+
+            // Act
+            var result = viewModel.IsHostedBy(user);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+
+        }
+
+        [Test]
+        [TestCase("Enkh" ,"Enkh", true)]
+        [TestCase("Enkh" ,"Nick", false)]
+        [TestCase("Nick" ,"Nick", true)]
+        public void IsUserRegistered(string hostedBy, string userName, bool expectedResult)
+        {
+            // Arrange
+            var viewModel = new DinnerFormViewModel()
+                {
+                    HostedBy = hostedBy
+                };
+            var user = Substitute.For<IPrincipal>(); //<-- Stubbing
+            user.Identity.Name.Returns(userName);    //<-- Mocking
+
+
+            // Act
+            var result = viewModel.IsUserRegistered(user);
+
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedResult));
+
+
+        }
+
     }
 }

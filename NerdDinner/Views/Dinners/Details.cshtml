@@ -1,4 +1,4 @@
-﻿@model NerdDinner.Models.Dinner
+﻿@model NerdDinner.Controllers.DinnerFormViewModel
 
 @{
     ViewBag.Title = "Details";
@@ -25,7 +25,11 @@
 </fieldset>
 
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.DinnerID }) |
-     @Html.ActionLink("Delete", "Delete", new {id = Model.DinnerID}) |
+    @if (Model.IsHostedBy(User))
+    {
+        @Html.ActionLink("Edit", "Edit", new { id=Model.DinnerID }) @:|
+        @Html.ActionLink("Delete", "Delete", new {id = Model.DinnerID}) @:|
+    }
     @Html.ActionLink("Back to List", "Index")
+
 </p>
