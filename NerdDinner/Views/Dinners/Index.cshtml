@@ -1,4 +1,4 @@
-﻿@model IEnumerable<NerdDinner.Models.Dinner>
+﻿@model NerdDinner.Controllers.PaginatedList<NerdDinner.Models.Dinner>
 
 @{
     ViewBag.Title = "Index";
@@ -14,13 +14,23 @@
             @dinner.EventDate.ToShortDateString() @@ @dinner.EventDate.ToShortTimeString()
         
 
-             @*@Html.ActionLink("Edit", "Edit", new {id = dinner.DinnerID})*@
-           @* @Html.ActionLink("Delete", "Delete", new {id = dinner.DinnerID})*@
+            @*@Html.ActionLink("Edit", "Edit", new {id = dinner.DinnerID})*@
+            @* @Html.ActionLink("Delete", "Delete", new {id = dinner.DinnerID})*@
         
         </li>
     
     }
-</ul>
+    
+
+    @if (Model.HasPreviousPage)
+    {
+        @Html.RouteLink("<<<", new {Page = Model.PageIndex - 1})
+    }
+    @if (Model.HasNextPage)
+    {
+        @Html.RouteLink(">>>", new {Page = Model.PageIndex + 1})
+    }
+    </ul>
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>

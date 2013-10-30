@@ -111,6 +111,65 @@ namespace NerdDinner.Tests.Models
 
         }
 
+
+        [Test]
+        [TestCase("Nick")]
+        public void FindDinnersHostedByByText(string term)
+        {
+            // Arrange
+            var tempRepository = new DinnerRepository();
+
+            var dinners = Builder<Dinner>
+                .CreateListOfSize(5)
+                .All()
+                .Do(row =>
+                    {
+                        var rsvPs = Builder<RSVP>.CreateListOfSize(5).Build().ToList();
+                        row.RSVPs = rsvPs;
+                    })
+                .Do(d => d.HostedBy = term)
+                .Build()
+                ;
+            var dinners2 = Builder<Dinner>
+                .CreateListOfSize(5)
+                .All()
+                .Do(row =>
+                {
+                    var rsvPs = Builder<RSVP>.CreateListOfSize(5).Build().ToList();
+                    row.RSVPs = rsvPs;
+                })
+                .Build()
+                ;
+
+            foreach (var dinner in dinners2)
+            {
+                dinners.Add(dinner);
+            }
+
+
+            using (var db = new NerdDinners())
+            {
+                foreach (var dinner in dinners)
+                {
+                    db.Dinners.Add(dinner);
+
+                    foreach (var rsvp in dinner.RSVPs)
+                    {
+                        db.RSVPs.Add(rsvp);
+                    }
+
+                }
+                db.SaveChanges();
+            }
+
+
+            // Act
+            var results = tempRepository.FindDinnersByText(term).ToList();
+
+            // Assert
+            Assert.That(results.Count, Is.EqualTo(5));
+        }
+
         [Test]
         public void GetDinner()
         {
@@ -120,11 +179,13 @@ namespace NerdDinner.Tests.Models
             // Act
             var dinner = this.Repository.GetDinner(id);
 
+
+            //returns null if dinner not found
             // Assert
             Assert.That(dinner, Is.Not.Null);
-
             Assert.That(dinner.DinnerID, Is.EqualTo(id));
         }
+
 
         [Test]
         public void GetDinner_WhenNoDinnerExistsWithSpecifiedId()

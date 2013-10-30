@@ -13,12 +13,12 @@ namespace NerdDinner.Controllers
         public int Totalpages { get; private set; }
 
 
-        public PaginatedList(IQueryable<T> source, int pageIndex, int pageSize)
+        public PaginatedList(IQueryable<T> source, int pageIndex, int pageSize )
         {
             PageIndex = pageIndex;
             PageSize = pageSize;
             TotalCount = source.Count();
-            Totalpages = (int)Math.Ceiling(TotalCount / (double)PageSize);
+            Totalpages = (int) Math.Ceiling(TotalCount/(double) PageSize);
 
             this.AddRange(source.Skip(PageIndex * PageSize).Take(pageSize));
         }

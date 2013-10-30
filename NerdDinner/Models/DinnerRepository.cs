@@ -36,7 +36,7 @@ namespace NerdDinner.Models
         public Dinner GetDinner(int id)
         {
             //returns null if dinner not found.
-            return entities.Dinners.FirstOrDefault(d => d.DinnerID == id);;
+            return entities.Dinners.FirstOrDefault(d => d.DinnerID == id);
         }
 
         public void Add(Dinner dinner)

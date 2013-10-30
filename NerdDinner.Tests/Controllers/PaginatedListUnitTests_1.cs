@@ -16,7 +16,7 @@ namespace NerdDinner.Tests.Controllers
         [SetUp]
         public void BeforeEachTestRuns()
         {
-
+            
         }
 
         //private NerdDinner.Models.Dinner
@@ -46,7 +46,7 @@ namespace NerdDinner.Tests.Controllers
             var paginatedList = new PaginatedList<NerdDinner.Models.Dinner>
                     (dinners, pageIndex, pageSize);
 
-
+            
             // Assert
             Assert.NotNull(paginatedList);
 
@@ -93,7 +93,7 @@ namespace NerdDinner.Tests.Controllers
                     Assert.That(paginatedList.HasPreviousPage, Is.True);
                 }
             }
-
+            
         }
 
         [Test]

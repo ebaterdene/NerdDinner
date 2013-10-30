@@ -180,7 +180,7 @@
     <Compile Include="Controllers\DinnerFormViewModel.cs" />
     <Compile Include="Controllers\DinnersController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\MyDinnersController.cs" />
+    <Compile Include="Controllers\PaginatedList.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>

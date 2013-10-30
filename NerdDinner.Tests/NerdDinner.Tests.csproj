@@ -64,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\DinnersControllerUnitTests.cs" />
+    <Compile Include="Controllers\PaginatedListUnitTests.cs" />
     <Compile Include="Controllers\Temp.cs" />
     <Compile Include="Models\DinnerFormViewModelTests.cs" />
     <Compile Include="Models\DinnerRepositoryTests.cs" />

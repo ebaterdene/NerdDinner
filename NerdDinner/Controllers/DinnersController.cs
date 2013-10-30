@@ -26,11 +26,9 @@ namespace NerdDinner.Controllers
         public ActionResult Index(int page = 0)
         {
             const int pageSize = 10;
-            var upcomingDinners = _repository.FindUpcomingDinners().ToList();
-            var paginatedDinners = upcomingDinners.OrderBy(d => d.EventDate)
-                                                  .Skip(page * pageSize)
-                                                  .Take(pageSize)
-                                                  .ToList();
+            var upcomingDinners = _repository.FindUpcomingDinners();
+            var paginatedDinners = 
+                new PaginatedList<Dinner>(upcomingDinners, page, pageSize);
             return View(paginatedDinners);
         }
        
